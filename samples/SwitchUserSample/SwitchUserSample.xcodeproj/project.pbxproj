@@ -101,6 +101,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		692EE577176868E400889155 /* manager */ = {
+			isa = PBXGroup;
+			children = (
+				85D0ED8D1538BF6200D88664 /* SUUserManager.h */,
+				85D0ED8E1538BF6200D88664 /* SUUserManager.m */,
+			);
+			name = manager;
+			sourceTree = "<group>";
+		};
+		692EE578176868F300889155 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				856DB062153393C3006F6A33 /* first.png */,
+				856DB064153393C3006F6A33 /* first@2x.png */,
+				856DB069153393C3006F6A33 /* second.png */,
+				856DB06B153393C3006F6A33 /* second@2x.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
 		856DB03E153393C3006F6A33 = {
 			isa = PBXGroup;
 			children = (
@@ -137,20 +157,16 @@
 		856DB053153393C3006F6A33 /* SwitchUserSample */ = {
 			isa = PBXGroup;
 			children = (
+				692EE578176868F300889155 /* images */,
+				692EE577176868E400889155 /* manager */,
 				856DB05C153393C3006F6A33 /* SUAppDelegate.h */,
 				856DB05D153393C3006F6A33 /* SUAppDelegate.m */,
 				85D0ED8A1538A9F400D88664 /* SUProfileTableViewCell.h */,
 				85D0ED8B1538A9F400D88664 /* SUProfileTableViewCell.m */,
 				856DB0881534B792006F6A33 /* SUSettingsViewController.h */,
 				856DB0891534B792006F6A33 /* SUSettingsViewController.m */,
-				85D0ED8D1538BF6200D88664 /* SUUserManager.h */,
-				85D0ED8E1538BF6200D88664 /* SUUserManager.m */,
 				856DB0811534B72B006F6A33 /* SUUsingViewController.h */,
 				856DB0821534B72B006F6A33 /* SUUsingViewController.m */,
-				856DB062153393C3006F6A33 /* first.png */,
-				856DB064153393C3006F6A33 /* first@2x.png */,
-				856DB069153393C3006F6A33 /* second.png */,
-				856DB06B153393C3006F6A33 /* second@2x.png */,
 				856DB08A1534B792006F6A33 /* SUSettingsViewController_iPhone.xib */,
 				856DB08D1534B7A0006F6A33 /* SUSettingsViewController_iPad.xib */,
 				856DB0831534B72B006F6A33 /* SUUsingViewController_iPhone.xib */,

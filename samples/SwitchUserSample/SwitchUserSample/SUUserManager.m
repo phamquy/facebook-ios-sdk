@@ -35,25 +35,26 @@ static NSString *const SUUserNameKeyFormat = @"SUUserName%d";
     }
     return self;
 }
-
+//------------------------------------------------------------------------------
 - (void)sendNotification {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"SUUserManagerUserChanged" 
                                                         object:nil];
 }
-
+//------------------------------------------------------------------------------
 - (void)validateSlotNumber:(int)slot {
     if (slot < 0 || slot >= [self maximumUserSlots]) {
-        [[NSException exceptionWithName:SUInvalidSlotNumber
-                                 reason:[NSString stringWithFormat:@"Invalid slot number %d specified", slot]
-                               userInfo:nil]
-        raise];
+        [[NSException
+          exceptionWithName:SUInvalidSlotNumber
+          reason:[NSString stringWithFormat:@"Invalid slot number %d specified", slot]
+          userInfo:nil]
+         raise];
     }
 }
-
+//------------------------------------------------------------------------------
 - (int)maximumUserSlots {
     return 4;
 }
-
+//------------------------------------------------------------------------------
 - (FBSessionTokenCachingStrategy*)createCachingStrategyForSlot:(int)slot {
     // FBSample logic
     // Token caching strategies are an advanced feature of the SDK; by creating one and passing it to 
@@ -64,15 +65,16 @@ static NSString *const SUUserNameKeyFormat = @"SUUserName%d";
     // Note: an application with more advanced token caching needs (beyond NSUserDefaults) can derive
     // from FBSessionTokenCachingStrategy, and implement any store for the token cache that it needs, 
     // including storing and retrieving tokens on an application-specific server, filesystem, etc.
-    FBSessionTokenCachingStrategy *tokenCachingStrategy = [[FBSessionTokenCachingStrategy alloc]
-                                                           initWithUserDefaultTokenInformationKeyName:[NSString stringWithFormat:@"SUUserTokenInfo%d", slot]];
+    FBSessionTokenCachingStrategy *tokenCachingStrategy =
+    [[FBSessionTokenCachingStrategy alloc]
+     initWithUserDefaultTokenInformationKeyName:[NSString stringWithFormat:@"SUUserTokenInfo%d", slot]];
     return tokenCachingStrategy;
 }
-
+//------------------------------------------------------------------------------
 - (BOOL)isSlotEmpty:(int)slot {
     return [self getUserIDInSlot:slot] == nil;
 }
-
+//------------------------------------------------------------------------------
 - (BOOL)areAllSlotsEmpty {
     int numSlots = [self maximumUserSlots];
     for (int i = 0; i < numSlots; ++i) {
@@ -82,7 +84,7 @@ static NSString *const SUUserNameKeyFormat = @"SUUserName%d";
     }
     return YES;
 }
-
+//------------------------------------------------------------------------------
 - (FBSession*)createSessionForSlot:(int)slot {
     // FBSample logic
     // Getting the right strategy instance for the right slot matters for this application
@@ -96,7 +98,7 @@ static NSString *const SUUserNameKeyFormat = @"SUUserName%d";
                                        tokenCacheStrategy:tokenCachingStrategy];
     return session;
 }
-
+//------------------------------------------------------------------------------
 - (NSString*)getUserNameInSlot:(int)slot {
     [self validateSlotNumber:slot];
 
@@ -107,7 +109,7 @@ static NSString *const SUUserNameKeyFormat = @"SUUserName%d";
     // may have saved only a plain NSDictionary.
     return [defaults objectForKey:key];
 }
-
+//------------------------------------------------------------------------------
 - (NSString*)getUserIDInSlot:(int)slot {
     [self validateSlotNumber:slot];
     
@@ -119,6 +121,7 @@ static NSString *const SUUserNameKeyFormat = @"SUUserName%d";
     return [defaults objectForKey:key];
 }
 
+//------------------------------------------------------------------------------
 - (void)updateUser:(NSDictionary<FBGraphUser> *)user inSlot:(int)slot {
     [self validateSlotNumber:slot];
 
@@ -151,14 +154,14 @@ static NSString *const SUUserNameKeyFormat = @"SUUserName%d";
 
     [self sendNotification];
 }
-
+//------------------------------------------------------------------------------
 - (void)switchToNoActiveUser {
     NSLog(@"SUUserManager switching to no active user");
     _currentSession = nil;
     _currentUserSlot = -1;
     [self sendNotification];
 }
-
+//------------------------------------------------------------------------------
 - (FBSession *)switchToUserInSlot:(int)slot {
     [self validateSlotNumber:slot];
     NSLog(@"SUUserManager switching to slot %d", slot);

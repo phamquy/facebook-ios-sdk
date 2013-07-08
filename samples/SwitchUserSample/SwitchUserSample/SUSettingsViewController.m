@@ -34,13 +34,15 @@
 - (NSIndexPath*)indexPathFromUserSlot:(int)slot;
 
 @end
-
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 @implementation SUSettingsViewController
 
 @synthesize usersTableView;
 @synthesize pendingRequest = _pendingRequest;
 @synthesize pendingLoginForSlot = _pendingLoginForSlot;
 
+//------------------------------------------------------------------------------
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -50,7 +52,7 @@
     }
     return self;
 }
-
+//------------------------------------------------------------------------------
 - (void)viewDidUnload {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -59,7 +61,7 @@
     self.usersTableView.dataSource = nil;
     self.usersTableView = nil;
 }
-
+//------------------------------------------------------------------------------
 - (void)loginDefaultUser {
     SUAppDelegate *appDelegate = (SUAppDelegate *)[[UIApplication sharedApplication]delegate];
     SUUserManager *userManager = appDelegate.userManager;
@@ -68,7 +70,7 @@
         [self loginSlot:0];
     }
 }
-
+//------------------------------------------------------------------------------
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
@@ -76,7 +78,7 @@
         return YES;
     }
 }
-
+//------------------------------------------------------------------------------
 - (void)updateCell:(SUProfileTableViewCell *)cell
            forSlot:(int)slot {
     SUAppDelegate *appDelegate = (SUAppDelegate *)[[UIApplication sharedApplication]delegate];
@@ -100,13 +102,13 @@
         }
     }
 }
-
+//------------------------------------------------------------------------------
 - (void)updateCellForSlot:(int)slot {    
     SUProfileTableViewCell *cell = (SUProfileTableViewCell *)[self.usersTableView cellForRowAtIndexPath:
                                                               [self indexPathFromUserSlot:slot]];
     [self updateCell:cell forSlot:slot];
 }
-
+//------------------------------------------------------------------------------
 - (void)updateForSessionChangeForSlot:(int)slot {
     SUAppDelegate *appDelegate = (SUAppDelegate *)[[UIApplication sharedApplication]delegate];
     SUUserManager *userManager = appDelegate.userManager;
@@ -159,7 +161,7 @@
         }
     }
 }
-
+//------------------------------------------------------------------------------
 - (void)loginSlot:(int)slot {
     SUAppDelegate *appDelegate = (SUAppDelegate *)[[UIApplication sharedApplication]delegate];
     SUUserManager *userManager = appDelegate.userManager;
@@ -173,6 +175,7 @@
     // If we can't log in as new user, we don't want to still be logged in as previous user,
     // particularly if it might not be obvious to the user that the login failed.
     [userManager switchToNoActiveUser];
+    
     self.pendingLoginForSlot = slot;
     
     if (slot != currentUserSlot) {
@@ -187,9 +190,7 @@
     // specify their name via the login dialog (Fallback Facebook Login.) The decision of when to try
     // Facebook Login vs. Fallback (force entering of credentials) will be specific to the needs of
     // an app; this app bases the decision on whether the user logs on the "primary user" or a "guest user"
-    FBSessionLoginBehavior behavior = (slot == 0) ?
-    FBSessionLoginBehaviorWithFallbackToWebView :
-    FBSessionLoginBehaviorForcingWebView;
+    FBSessionLoginBehavior behavior = (slot == 0) ? FBSessionLoginBehaviorWithFallbackToWebView : FBSessionLoginBehaviorForcingWebView;
     
     FBSession *session = [userManager switchToUserInSlot:slot];
     [self updateCellForSlot:slot];
@@ -208,24 +209,24 @@
                 [self updateForSessionChangeForSlot:slot];
             }];
 }
-
+//------------------------------------------------------------------------------
 - (int)userSlotFromIndexPath:(NSIndexPath *)indexPath {
     // This relies on the fact that there's only one user in the first section.
     return indexPath.section + indexPath.row;
 }
-
+//------------------------------------------------------------------------------
 - (NSIndexPath*)indexPathFromUserSlot:(int)slot {
     // See comment in userSlotFromIndexPath:
     return [NSIndexPath indexPathForRow:(slot == 0) ? 0 : (slot - 1)
                               inSection:(slot == 0) ? 0 : 1];
 }
-
+//------------------------------------------------------------------------------
 #pragma mark UITableViewDataSource methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
 }
-
+//------------------------------------------------------------------------------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     SUAppDelegate *appDelegate = (SUAppDelegate *)[[UIApplication sharedApplication]delegate];
     SUUserManager *userManager = appDelegate.userManager;
@@ -237,7 +238,7 @@
             return [userManager maximumUserSlots] - 1;
     }
 }
-
+//------------------------------------------------------------------------------
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     
@@ -255,7 +256,7 @@
     
     return cell;
 }
-
+//------------------------------------------------------------------------------
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case 0:
@@ -264,13 +265,13 @@
             return @"Guest Users:";
     }
 }
-
+//------------------------------------------------------------------------------
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     SUAppDelegate *appDelegate = (SUAppDelegate*)[[UIApplication sharedApplication]delegate];
     SUUserManager *userManager = [appDelegate userManager];
     return [userManager getUserIDInSlot:[self userSlotFromIndexPath:indexPath]] != nil;
 }
-
+//------------------------------------------------------------------------------
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     SUAppDelegate *appDelegate = (SUAppDelegate*)[[UIApplication sharedApplication]delegate];
     SUUserManager *userManager = [appDelegate userManager];
@@ -280,7 +281,7 @@
         [self updateCellForSlot:slot];
     }
 }
-
+//------------------------------------------------------------------------------
 #pragma mark -
 #pragma mark UITableViewDelegate methods
 
@@ -289,7 +290,7 @@
                                                       cellForRowAtIndexPath:indexPath];
     return cell.desiredHeight;
 }
-
+//------------------------------------------------------------------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     SUAppDelegate *appDelegate = (SUAppDelegate*)[[UIApplication sharedApplication]delegate];
     SUUserManager *userManager = [appDelegate userManager];
@@ -307,8 +308,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];    
     return;
 }
-
-- (NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+//------------------------------------------------------------------------------
+- (NSString*)tableView:(UITableView *)tableView
+titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     return @"Forget";
 }
 

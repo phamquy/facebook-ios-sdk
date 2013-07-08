@@ -24,28 +24,45 @@
 @synthesize tabBarController = _tabBarController;
 @synthesize userManager = _userManager;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application
+didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // FBSample logic
     // Creates an instance of the SUUserManager class, used to manage multiple user logins; note that this
     // application does not attempt to maintain multiple active users at once; however it does remember
     // multiple users that have at one time or another logged onto facebook from the application; at any one
     // time there is only a single active user
+    
     self.userManager = [[SUUserManager alloc] init];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     SUUsingViewController *viewController1;
     SUSettingsViewController *viewController2;
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        viewController1 = [[SUUsingViewController alloc] initWithNibName:@"SUUsingViewController_iPhone" bundle:nil];
-        viewController2 = [[SUSettingsViewController alloc] initWithNibName:@"SUSettingsViewController_iPhone" bundle:nil];
+        viewController1 = [[SUUsingViewController alloc]
+                           initWithNibName:@"SUUsingViewController_iPhone"
+                           bundle:nil];
+        
+        viewController2 = [[SUSettingsViewController alloc]
+                           initWithNibName:@"SUSettingsViewController_iPhone"
+                           bundle:nil];
     } else {
-        viewController1 = [[SUUsingViewController alloc] initWithNibName:@"SUUsingViewController_iPad" bundle:nil];
-        viewController2 = [[SUSettingsViewController alloc] initWithNibName:@"SUSettingsViewController_iPad" bundle:nil];
+        viewController1 = [[SUUsingViewController alloc]
+                           initWithNibName:@"SUUsingViewController_iPad"
+                           bundle:nil];
+        
+        viewController2 = [[SUSettingsViewController alloc]
+                           initWithNibName:@"SUSettingsViewController_iPad"
+                           bundle:nil];
     }
+    
     self.tabBarController = [[UITabBarController alloc] init];
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2, nil];
+    
+    self.tabBarController.viewControllers =
+        [NSArray arrayWithObjects:viewController1, viewController2, nil];
+    
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
